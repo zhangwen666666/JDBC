@@ -2,6 +2,12 @@
 JDBC（Java DataBase Connectivity）就是Java数据库连接，说白了就是用Java语言来操作数据库。原来我们操作数据库是在控制台使用SQL语句来操作数据库，JDBC是用Java语言向数据库发送SQL语句。
 ![图片1.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1701931262247-009be90f-6a0e-4e63-a1f1-6d6c96df65ce.png#averageHue=%23efe7f7&clientId=ucd4dfa1f-8793-4&from=paste&height=374&id=u7ed5bac8&originHeight=374&originWidth=657&originalType=binary&ratio=1&rotation=0&showTitle=false&size=136883&status=done&style=shadow&taskId=u2ff2f08f-57be-4241-9660-c991fa1d540&title=&width=657)
 
+JDBC是一条链接数据库的API，什么是API？API(Application Programming Interface 应用程序编程接口)实际上就是我们平时说的一套类库，通常API包括三项：
+
+* API字节码(String.class)
+* API源码(String.java)
+* API帮助文档(String类的帮助文档)
+
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=acVGP&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 # JDBC原理
 早期SUN公司的天才们想编写一套可以连接天下所有数据库的API，但是当他们刚刚开始时就发现这是不可完成的任务，因为各个厂商的数据库服务器差异太大了。后来SUN开始与数据库厂商们讨论，最终得出的结论是，由SUN提供一套访问数据库的规范（就是一组接口），并提供连接数据库的协议标准，然后各个数据库厂商会遵循SUN的规范提供一套访问自己公司数据库服务器的API。SUN提供的规范命名为JDBC，而各个厂商提供的，遵循了JDBC规范的，可以访问自己数据库的API被称之为驱动！
