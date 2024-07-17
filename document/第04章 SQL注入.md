@@ -113,15 +113,16 @@ select realname from t_user where name = 'aaa' and password = 'bbb' or '1'='1';
 # 解决SQL注入问题
 导致SQL注入的根本原因是什么？只有找到真正的原因，问题才能得到解决。
 
-最根本的原因是：Statement造成的。
+**最根本的原因是：Statement造成的**。
 
-Statement执行原理是：先进行字符串的拼接，将拼接好的SQL语句发送给数据库服务器，数据库服务器进行SQL语句的编译，然后执行。因此用户提供的信息中如果含有SQL语句的关键字，那么这些关键字正好参加了SQL语句的编译，所以导致原SQL语句被扭曲。
+**Statement执行原理是：先进行字符串的拼接，将拼接好的SQL语句发送给数据库服务器，数据库服务器进行SQL语句的编译，然后执行。因此用户提供的信息中如果含有SQL语句的关键字，那么这些关键字正好参加了SQL语句的编译，所以导致原SQL语句被扭曲。**
 
 因此，JDBC为了解决这个问题，引入了一个新的接口：PreparedStatement，我们称为：预编译的数据库操作对象。PreparedStatement是Statement接口的子接口。它俩是继承关系。
 
 PreparedStatement执行原理是：先对SQL语句进行预先的编译，然后再向SQL语句指定的位置传值，也就是说：用户提供的信息中即使含有SQL语句的关键字，那么这个信息也只会被当做一个值传递给SQL语句，用户提供的信息不再参与SQL语句的编译了，这样就解决了SQL注入问题。
 
-使用PreparedStatement解决SQL注入问题：
+**使用PreparedStatement解决SQL注入问题**：
+
 ```java
 package com.powernode.jdbc;
 
@@ -215,7 +216,7 @@ public class JDBCTest03 {
 **关于使用PreparedStatement要注意的是：**
 
 - 带有占位符 ? 的SQL语句我们称为：预处理SQL语句。
-- 占位符 ? 不能使用单引号或双引号包裹。如果包裹，占位符则不再是占位符，是一个普通的问号字符。
+- **占位符 ? 不能使用单引号或双引号包裹**。如果包裹，占位符则不再是占位符，是一个普通的问号字符。
 - 在执行SQL语句前，必须给每一个占位符 ? 传值。
 - 如何给占位符 ? 传值，通过以下的方法：
    - pstmt.setXxx(第几个占位符, 传什么值)

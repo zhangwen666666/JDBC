@@ -2,13 +2,13 @@ package com.jdbc;
 
 import com.jdbc.utils.DbUtils;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Scanner;
 
-public class JDBCTest08 {
+/**
+ * 使用PreparedStatement解决SQL注入问题
+ */
+public class JDBCTest09 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         //1.初始化登录界面
@@ -23,19 +23,24 @@ public class JDBCTest08 {
 
         //2. 连接数据库，验证用户名和密码是否正确
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         ResultSet ret = null;
 
         try {
             //3. 获取连接
             connection = DbUtils.getConnection();
-            //4. 创建数据库操纵对象
-            statement = connection.createStatement();
+
+            //4. 获取预编译的数据库操纵对象
+            String sql = "select * from t_user where name = ? and password = ?";
+            statement = connection.prepareStatement(sql);
+
+            //给 ? 传值
+            statement.setString(1,loginName);
+            statement.setString(2,loginPassword);
+
             //5. 执行SQL语句
-            String sql = "select * from t_user where name = '" + loginName +
-                    "' and password = '" + loginPassword + "'";
             System.out.println(sql);
-            ret = statement.executeQuery(sql);
+            ret = statement.executeQuery();
             //6. 处理结果集
             if (ret.next()) {
                 String name = ret.getString("realname");
