@@ -308,7 +308,7 @@ jdbc:mysql://localhost:3306/mydatabase?user=myusername&password=mypassword&serve
 - useUnicode：是否使用Unicode编码进行数据传输，默认是true启用
 
 `useUnicode`是 JDBC 驱动程序连接数据库时的一个参数，用于告诉驱动程序在传输数据时是否使用 Unicode 编码。Unicode 是计算机科学中的一种字符编码方案，可以用于表示全球各种语言中的字符，包括 ASCII 码、中文、日文、韩文等。因此，使用 Unicode 编码可以确保数据在传输过程中能够正确、完整地呈现各种语言的字符。
-具体地说，如果设置 `useUnicode=true`，JDBC 驱动程序会在传输数据时使用 Unicode 编码。这意味着，无论数据源中使用的是什么编码方案，都会先将数据转换为 Unicode 编码进行传输，确保数据能够跨平台、跨数据库正确传输。当从数据库中获取数据时，驱动程序会根据 `characterEncoding` 参数指定的字符集编码将数据转换为指定编码格式，以便应用程序正确处理数据。
+具体地说，如果设置 `useUnicode=true`，JDBC 驱动程序会**在传输数据时使用 Unicode 编码**。这意味着，无论数据源中使用的是什么编码方案，都会先将数据转换为 Unicode 编码进行传输，确保数据能够**跨平台、跨数据库**正确传输。当从数据库中获取数据时，驱动程序会根据 `characterEncoding` 参数指定的字符集编码将数据转换为指定编码格式，以便应用程序正确处理数据。
 需要注意的是，如果设置 `useUnicode=false`，则表示使用当前平台默认的字符集进行数据传输。这可能会导致在跨平台或跨数据库时出现字符编码不一致的问题，因此通常建议在进行数据传输时启用 Unicode 编码。
 综上所述，设置 `useUnicode` 参数可以确保数据在传输过程中正确呈现各种字符集编码。对于应用程序处理多语言环境数据的场景，启用 `useUnicode` 参数尤为重要。
 
@@ -559,7 +559,7 @@ Class.forName("com.mysql.cj.jdbc.Driver");
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702447277996-c1526d49-f502-4925-8042-0d4edff0370d.png#averageHue=%23faf7f6&clientId=u7c1aac3c-b9a1-4&from=paste&height=633&id=u1781014f&originHeight=633&originWidth=675&originalType=binary&ratio=1&rotation=0&showTitle=false&size=82510&status=done&style=shadow&taskId=u584847eb-e7ea-45a6-bac9-aa7ad04fe44&title=&width=675)
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/21376908/1702447333885-23189b4e-5767-4dba-ae21-bdc543241db6.png#averageHue=%23fdfaf9&clientId=u7c1aac3c-b9a1-4&from=paste&height=680&id=uf6d27369&originHeight=680&originWidth=830&originalType=binary&ratio=1&rotation=0&showTitle=false&size=46959&status=done&style=shadow&taskId=u3d931415-f78b-48b4-bd14-348658e6392&title=&width=830)
 
-通过源码不难发现，在`com.mysql.cj.jdbc.Driver`类中有一个静态代码块，在这个静态代码块中调用了`java.sql.DriverManager.registerDriver(new Driver());`完成了驱动的注册。而`Class.forName("com.mysql.cj.jdbc.Driver");`代码的作用就是让`com.mysql.cj.jdbc.Driver`类完成加载，执行它的静态代码块。
+**通过源码不难发现，在`com.mysql.cj.jdbc.Driver`类中有一个静态代码块，在这个静态代码块中调用了`java.sql.DriverManager.registerDriver(new Driver());`完成了驱动的注册。而`Class.forName("com.mysql.cj.jdbc.Driver");`代码的作用就是让`com.mysql.cj.jdbc.Driver`类完成加载，执行它的静态代码块。**
 
 编写代码测试一下：
 ```java
