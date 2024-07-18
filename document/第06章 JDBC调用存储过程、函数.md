@@ -83,9 +83,9 @@ Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb"
 ```
 其中，第一个参数为连接字符串，按照实际情况修改；第二个参数为用户名，按照实际情况修改；第三个参数为密码，按照实际情况修改。
 
-3. 创建CallableStatement对象
+3. 创建CallableStatement对象**(CallableStatement继承自PreparedStatement,而PreparedStatement继承了Statement)**
 
-使用以下代码创建CallableStatement对象：
+使用以下代码创建CallableStatement对象：**注意SQL语句有个大括号**
 ```
 CallableStatement cstmt = conn.prepareCall("{call mypro(?, ?)}");
 ```
@@ -132,3 +132,73 @@ conn.close();
 上述代码中，可以根据实际情况适当修改存储过程名、参数传递方式、参数类型等内容。
 
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=ejcIL&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
+
+# 在MySQL中创建函数
+
+```sql
+/*
+	求两个数的阶乘和
+	参数：a,b
+	返回值:a! + b!
+*/
+drop function if exists myfun;
+create function myfun(a int,b int) returns int deterministic
+begin
+	declare result int default 0;
+	-- 存储a的阶乘
+	declare temp1 int default 1;
+	-- 存储b的阶乘
+	declare temp2 int default 1; 
+	-- 求a的阶乘
+	while a >= 1 do 
+		set temp1 := temp1 * a;
+		set a := a - 1;
+	end while;
+	-- 求b的阶乘
+	while b >= 1 do 
+		set temp2 := temp2 * b;
+		set b := b - 1;
+	end while;
+	-- 求a! + b!
+	set result := temp1 + temp2;
+	return result;
+end;
+```
+
+# 使用JDBC代码调用存储过程
+
+```java
+Connection connection = null;
+CallableStatement cs = null;
+try {
+    //注册驱动与获取连接
+    connection = DbUtils.getConnection();
+
+    //获取数据库操作对象
+    String sql = "{? = call myfun(?,?)}";
+    cs = connection.prepareCall(sql);
+    //给第二个和第三个?传值
+    cs.setInt(2,3);
+    cs.setInt(3,4);
+    //将第一个?设置为出参
+    cs.registerOutParameter(1, Types.INTEGER);
+    //执行SQL语句
+    cs.execute();
+    //获取结果
+    int result = cs.getInt(1);
+    System.out.println(result);//3! + 4! = 30
+} catch (SQLException e) {
+    throw new RuntimeException(e);
+}finally {
+    DbUtils.close(connection,cs,null);
+}
+```
+
+注意：在mysql中调用该函数不需要使用call关键字
+
+```sql
+set @result = myfun(3,4);
+select @result;
+```
+
+但是在这里预编译的sql语句必须有call
