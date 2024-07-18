@@ -773,6 +773,25 @@ public class JDBCTest10 {
 ```
 执行完毕之后，查看一下图片大小是否和原图片相同，打开看看是否可以正常显示。
 
+## 获取新增行的主键值
+
+```sql
+connection = DbUtils.getConnection();
+String sql = "insert into t_employee(name,job,salary) values(?,?,?)";
+preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+preparedStatement.setString(1, name);
+preparedStatement.setString(2, job);
+preparedStatement.setDouble(3, salary);
+preparedStatement.executeUpdate();
+long id = -1;
+resultSet = preparedStatement.getGeneratedKeys();
+if(resultSet.next()){
+	-- 如果不判断直接获取值的话会报错
+    id = resultSet.getLong(1);
+}
+return id;
+```
+
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=mIusF&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 # JDBC批处理操作
 准备一张商品表：t_product
