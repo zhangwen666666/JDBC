@@ -23,10 +23,9 @@ public class JDBCTest22 {
                     System.out.println("退出系统，欢迎下次使用");
                     return;
                 }
-                case 1 -> {
+                case 1 ->
                     //查看员工列表
-                    showList();
-                }
+                        showList();
                 case 2 -> {
                     //查看员工详细信息
                     showList();
@@ -82,12 +81,10 @@ public class JDBCTest22 {
                         break;
                     }
                     boolean ret = delete(id);
-                    System.out.println(ret?"删除成功":"删除失败");
+                    System.out.println(ret ? "删除成功" : "删除失败");
                     showList();
                 }
-                default -> {
-                    System.out.println("你的选择无效，请重新选择");
-                }
+                default -> System.out.println("你的选择无效，请重新选择");
             }
         }
     }

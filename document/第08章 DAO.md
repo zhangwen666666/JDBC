@@ -5,6 +5,16 @@ DAO是：Data Access Object，翻译为：数据访问对象。
 在实际的开发中，通常我们会将数据库的操作封装为一个单独的DAO去完成，这样做的目的是：提高代码的复用性，另外也可以降低程序的耦合度，提高扩展力。
 例如：操作用户数据的叫做UserDao，操作员工数据的叫做EmployeeDao，操作产品数据的叫做ProductDao，操作订单数据的叫做OrderDao等。
 
+注意：
+
+* DAO不负责任何业务逻辑的处理，只负责CRUD操作。
+  * C：Create 增
+  * R：Read 查
+  * U：Update 改
+  * D：Delete 删
+* DAO是JavaEE的设计模式之一。
+* DAO中方法起名也有讲究，一般都是以：insert delete update select开头。
+
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=B8M6O&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 # 使用DAO改造员工信息管理
 ## 定义Employee封装数据
@@ -103,7 +113,10 @@ public class Employee {
 ```
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/21376908/1692002570088-3338946f-42b3-4174-8910-7e749c31e950.jpeg#averageHue=%23f9f8f8&from=url&id=ZQhjT&originHeight=78&originWidth=1400&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=shadow&title=)
 ## 定义EmployeeDao
+
+
 定义五个方法，分别完成五个功能：新增，修改，删除，查看一个，查看所有。
+
 ```java
 package com.powernode.jdbc.dao;
 
